@@ -1,5 +1,5 @@
 #!/bin/bash
-# Purpose: Sends an email (for example, a cron job sending job logs) using PGP enncrypted content
+# Purpose: Sends an email (for example, a cron job sending job logs) using PGP encrypted content
 # Params:
 # stdin 	: the message content
 # $1 		: the subject line of the email
@@ -7,6 +7,11 @@
 # Notes:
 # Don't forget to make sure the recipient email matches the public key recipient you've used
 # decided to hard code the recipient as this is for an automated script with a specific recipient every time
+# 
+# Requires:
+# 		shred
+#		gnupg
+#		ssmtp
 
 # parse the message content / pipe
 # not sure this will work - will prob just sit there waiting for input due to use of ${cat} so requires piped content
@@ -14,9 +19,10 @@ messageDump=$(cat)
 
 # set up the locals
 subject="[Protected] No subject"
-asciiKey=~/Keys/netsec.asc
-binKey=~/Keys/sourceKey.bin
+asciiKey=./netsec.asc
+binKey=./sourceKey.bin
 recipient="<recipient email>" 
+sender="$HOSTNAME@yourdomain.com"
 messageDumpEncrypted=/tmp/message.txt.pgp
 messageDumpTemp=/tmp/message.txt
 
@@ -42,14 +48,33 @@ if [ ! -e $binKey ]; then
 
 	# drop ascii into bin
 	gpg --dearmor < $asciiKey > $binKey
-	# optionally remove the ascii public key after the bin is created
-	# shred -u $asciiKey
+	# optionally remove the ascii public key after the bin is created. Not sure if this is necessary
+	# shred -zu -n 7 $asciiKey
 fi
 
 # encrypt the payload
+# Note: If you refer to a key in the /home/<user>/.gnupg/gpg.conf from root you will get a "WARNING: Unsafe ownership ..." error. Should be ok
+# from root -> user but look into it further if you are not using this user pair
 gpg --batch --armor --trust-model always --no-default-keyring --keyring $binKey --recipient $recipient --encrypt < $messageDumpTemp > $messageDumpEncrypted
+shred -zu -n 7 "$messageDumpTemp"
 
 if [ -e $messageDumpEncrypted ]; then
 	# content created and encrypted now send the email
-	ssmtp $recipient < $messageDumpEncrypted
+	{
+	    echo To: $recipient
+	    echo From: $sender
+	    echo Subject: [$HOSTNAME] $1
+	    cat $messageDumpEncrypted
+	} | ssmtp $recipient	
+else
+	# send notification that protected email could not be sent
+	{
+	    echo To: $recipient
+	    echo From: $sender
+	    echo Subject: [$HOSTNAME] $1
+	    echo "An attempt to protect an email was made, but was not successful. Check logs on originating server."
+	} | ssmtp $recipient
 fi
+
+# clean up
+shred -zu -n 7 "$messageDumpEncrypted"
