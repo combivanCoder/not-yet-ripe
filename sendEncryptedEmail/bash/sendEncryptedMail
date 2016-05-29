@@ -19,10 +19,10 @@ messageDump=$(cat)
 
 # set up the locals
 subject="[Protected] No subject"
-asciiKey=./netsec.asc
-binKey=./sourceKey.bin
-recipient="<recipient email>" 
-sender="$HOSTNAME@yourdomain.com"
+asciiKey=/path/to/pubkey.asc
+binKey=/path/to/sourceKey.bin
+recipient="<recipient>" 
+sender="$HOSTNAME@domain-name.org"
 messageDumpEncrypted=/tmp/message.txt.pgp
 messageDumpTemp=/tmp/message.txt
 
