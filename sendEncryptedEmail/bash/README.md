@@ -6,5 +6,10 @@
 PATH=<usual paths>:/opt/send # or wherever you're putting the script
 MAILTO=recipient@domain.com # backup for plain text outputs where you're not piping the output to sendEncryptEmail
 
+# send everything to pipe (stderr + stdout)
 0 5 * * * /path/script 2>&1 | sendEncryptedMail "Some relevant subject that doesn't say too much"
+
+# send only if the stderr has a result
+0 5 * * * /path/script 2>&1 > /dev/null | sendEcnryptedMail "Some relevant subject line that doesn't say too much"
 ```
+4. Can be called from other scripts by path, by encapsulating in function and sourcing into another script etc
