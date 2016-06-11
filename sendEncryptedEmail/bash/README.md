@@ -4,10 +4,12 @@
 
 #### Crontab
 1. Can be called from crontab using the following
-```
+```bash
 PATH=<usual paths>:/opt/send # or wherever you're putting the script
 MAILTO=recipient@domain.com # backup for plain text outputs where you're not piping the 
-                            # output to sendEncryptMail
+                            # output to sendEncryptMail. 
+                            # Once I'm sure the pipeline is up I tend to comment 
+                            # this out
 
 # send everything to pipe (stderr + stdout)
 0 5 * * * /path/script 2>&1 | sendEncryptedMail "Carefully worded subject"
