@@ -1,0 +1,32 @@
+#!/bin/bash
+# checks the tresorit run file against the pub key advertised
+# WARNING: Public key provided from Tresorit website. Needs regular verification or direct pull
+
+keyFile=/tmp/tresorit.pubKey
+sigFile=/tmp/tresorit.signature
+
+# bleurgh. got to be a better way than use cat
+cat << "EOF" > $keyFile
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAryoiyObNiVI1NY3jNcjW
+0olXEUP5kaZRXTkUJIsFMQ2Q8QW827CjmvNgATvXBippiGr5X2jb2Tvx1Ktfbzav
+JirNFRDQKuoYv/Sk81ax87xXLqxclYVv6EjQLncGlcq8uJ9VOPuwAIVJf9bLo2Li
+BXEP7UKH+yyX2jCQB0WgoQNX2NOydcD6whdj5JcmH9ZYfP4qPI+jw/uadpsFqBHy
+AreALoIpoCREctXERuImq4nUCLR68tH4438zRRQwwG5dg78ZNC/aEoXG8Uyj59BN
+GvnWDzE42OWuX3d6qL2Z5FwYncDHDRmZZl9R6Mx9PshYuKrNIuciQVCC3l02/qmj
+GD5P7uHVN8HufLpeYefncreO3V3GDLPrZjLNuFcc1RhOPiec7ffJuvdX/KPML+CI
+40dGDl7qiE52xNKhcNwR7N0OIdChV5qyna30uyYFBC/2kWYCTzOnhD7YrPcxu+W7
+Sc76YpNqtYPcczYjPuVc3RZssQUpHIP/81jYu4Lj3w33tKmBDsLK6p2OJHXuoLss
+HF2YpzJJ1zlMJA5AGFaJd4Uv2ByPjOTY1MDxuVsWHZkIef4Z0lDOGb1MdlD8hMGR
+bRZwyZ2RtU08yhwJWBEL08MblLMyHWidvEXnVCQZAy/ISez76nuQxs5HO/bh1wgD
+P3lOsOjyg02BMS/l9m/uyWsCAwEAAQ==
+-----END PUBLIC KEY-----
+EOF
+
+head -c1044 tresorit_installer.run | tail -c+20 | xxd -r -p > $sigFile
+
+tail -c+1046 tresorit_installer.run | openssl sha512 -verify $keyFile -sigopt rsa_padding_mode:pss -sigopt rsa_pss_saltlen:-1 -signature $sigFile
+
+rm $keyFile
+rm $sigFile
+
