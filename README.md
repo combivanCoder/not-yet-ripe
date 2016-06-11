@@ -16,6 +16,9 @@ I'm writing a bash version but will also stick a python3 version up too as I can
 A lot of the work I do involves explaining to spammers that they don't need "do not distribute" lists - especially after these lists have been accidentally sold on as a leads list.
 
 I've been working on an Excel workbook using macros (I know - I'm sorry, but the target audience are running their businesses on Excel) although I may post a .NET desktop app equivelant or powershell script
-####3. Still Deciding
 
-Working on it. Already have too many things to do and this one depends on how quickly a legal case is resolved (another spam-related 
+####3. Tripwire Eval Script
+Something I found useful when setting the perimeter on linux servers
+
+####4. TBC
+Depends how one of my current projects goes
