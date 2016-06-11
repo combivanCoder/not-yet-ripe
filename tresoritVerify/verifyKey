@@ -1,6 +1,9 @@
 #!/bin/bash
 # checks the tresorit run file against the pub key advertised
-# WARNING: Public key provided from Tresorit website. Needs regular verification or direct pull
+# params
+# 	1 - path to installer.run file
+# notes
+#   Need to be cautious that the pub key is acquired directly from vendor
 
 keyFile=/tmp/tresorit.pubKey
 sigFile=/tmp/tresorit.signature
@@ -23,10 +26,9 @@ P3lOsOjyg02BMS/l9m/uyWsCAwEAAQ==
 -----END PUBLIC KEY-----
 EOF
 
-head -c1044 tresorit_installer.run | tail -c+20 | xxd -r -p > $sigFile
+head -c1044 $1 | tail -c+20 | xxd -r -p > $sigFile
 
-tail -c+1046 tresorit_installer.run | openssl sha512 -verify $keyFile -sigopt rsa_padding_mode:pss -sigopt rsa_pss_saltlen:-1 -signature $sigFile
+tail -c+1046 $1 | openssl sha512 -verify $keyFile -sigopt rsa_padding_mode:pss -sigopt rsa_pss_saltlen:-1 -signature $sigFile
 
 rm $keyFile
 rm $sigFile
-
