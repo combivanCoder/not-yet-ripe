@@ -4,6 +4,8 @@
 # 	1 - path to installer.run file
 # notes
 #   Need to be cautious that the pub key is acquired directly from vendor
+# Requires:
+#   - openssl
 
 keyFile=/tmp/tresorit.pubKey
 sigFile=/tmp/tresorit.signature
