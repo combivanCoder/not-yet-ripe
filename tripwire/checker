@@ -1,0 +1,26 @@
+#!/bin/bash
+# collates the daily tripcheck and emails if issues detected
+
+# check system
+if [ -e /etc/tripwire/bin/daily.log ] ; then
+	rm /etc/tripwire/bin/daily.log
+fi
+(
+	/usr/sbin/tripwire --check
+) > /etc/tripwire/bin/daily.log
+
+# processing the log output looking for the number of violations in this format:
+# Total violations found:  100
+zeroViolations=$(grep -i "Total violations found:  0" /etc/tripwire/bin/daily.log)
+
+if [ -z "$zeroViolations" ]; then
+	# build notification
+	#logger "[Tripwire] Tripped. Building notifiication"
+
+	logger "[Tripwire] Notification built"
+	#/usr/sbin/ssmtp net.sec@ls-principals.co.uk < /etc/tripwire/bin/sendthis.txt
+	cat daily.log | /opt/send/sendEncryptedMail "Tenuous Subject Line That Doesnt Give Game Away"
+
+	logger "[Tripwire] Notification send."
+	#rm /etc/tripwire/bin/sendthis.txt
+fi
