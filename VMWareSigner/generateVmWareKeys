@@ -6,9 +6,11 @@
 #	2. OpenSSL
 #	3. MokUtil (if not already installed)
 
+certSubject="/C=CountyCode/ST=OfficeState/L=OfficeCity/O=Dept/CN=local.yourdomain.ext"
+
 # check to see if the signer has already been generated. If not, create / regenerate it in the same folder as this script 
 if [ ! -e ./vmmon.priv ] || [ ! -e ./vmmon.der ]; then
-	openssl req -new -x509 -newkey rsa:4096 -keyout vmmon.priv -outform DER -out vmmon.der -nodes -days 365 -subj "/C=CountyCode/ST=OfficeState/L=OfficeCity/O=Dept/CN=local.yourdomain.ext"
+	openssl req -new -x509 -newkey rsa:4096 -keyout vmmon.priv -outform DER -out vmmon.der -nodes -days 365 -subj $certSubject
 
 	# once signer is ready, apply cert to mod
 	sudo /usr/src/linux-headers-$(uname -r)/scripts/sign-file sha256 ./vmmon.priv ./vmmon.der $(modinfo -n vmmon)
@@ -22,7 +24,7 @@ fi
 
 ## Repeat process for vmnet
 if [ ! -e ./vmnet.priv ] || [ ! -e ./vmnet.der ]; then
-	openssl req -new -x509 -newkey rsa:4096 -keyout vmnet.priv -outform DER -out vmnet.der -nodes -days 365 -subj "/C=CountyCode/ST=OfficeState/L=OfficeCity/O=Dept/CN=local.yourdomain.ext"
+	openssl req -new -x509 -newkey rsa:4096 -keyout vmnet.priv -outform DER -out vmnet.der -nodes -days 365 -subj $certSubject
 
 	# once signer is ready, apply cert to mod
 	sudo /usr/src/linux-headers-$(uname -r)/scripts/sign-file sha256 ./vmnet.priv ./vmnet.der $(modinfo -n vmnet)
