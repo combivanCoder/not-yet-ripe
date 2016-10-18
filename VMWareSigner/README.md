@@ -11,5 +11,5 @@ Basically we generate an X509 which is then used to authenticate the drivers to 
 Use passwords for the private certificate and keep them away from public access. If your keys are compromised and you download malicious software which is signed you may inadvertantly add root kits to your systems.  
 
 ### NB
-1# Do *Not* run this script and use the outputs without first configuring it to your own specifications. The example certificate generation is not intended for actual use.
-2# You will need to re-sign the two VMWare drivers everytime the kernel is updated. 
+1. Do *Not* run this script and use the outputs without first configuring it to your own specifications. The example certificate generation is not intended for actual use.
+2. You will need to re-sign the two VMWare drivers everytime the kernel is updated. 

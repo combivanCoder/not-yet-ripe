@@ -1,5 +1,6 @@
 #!/bin/bash
 # Allows secure boot signing to enable VMWare network drivers. automates the update of the vmmon signing for any kernel updates. 
+# You will be asked to set a password, which is then requested via MOKutil.
 # Requires 
 #	1. sudo membership
 #	2. OpenSSL
