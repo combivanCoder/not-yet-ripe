@@ -3,6 +3,8 @@ Simple script that automates the process of generating keys to sign the VMWare n
 
 Create a new folder in an appropriately secured folder and run this script from that folder.
 
+## NO LONGER USED MAINTAINED: Abandoned VMWare due to code-signing issues
+
 ### Reason Needed
 Because the drivers run within the OS they must be authorised to start at boot - if you're running UEFI and secure boot this would normally be prevented.
 
