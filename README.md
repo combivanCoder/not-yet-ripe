@@ -16,11 +16,6 @@ Intended for use by cron jobs sending notification emails (logs etc). I needed a
 
 _Updated_: This is largely unchanged in over a year and shown to be a practiable approach.
 
-## How To Hash
-A lot of the work I do involves explaining to spammers that they don't need "do not distribute" lists - especially after these lists have been accidentally sold on as a leads list.
-
-I've been working on an Excel workbook using macros (I know - I'm sorry, but the target audience are running their businesses on Excel) although I may post a .NET desktop app equivelant or powershell script
-
 ## Tresorit Verification Script
 To verify the signature of Tresorit packages isn't as simple as most standard signature+file. I doubt I'll remember how to do it if there is a difference of more than a few months between releases so automated through a script.
 
